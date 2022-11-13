@@ -23,6 +23,6 @@ public class ListItemService {
         return result.get();
     }
 
-    public void addListItem(ListItem listItem) {listItemRepository.save(listItem);
-    }
+    public void addListItem(ListItem listItem) {listItemRepository.save(listItem);}
+
 }

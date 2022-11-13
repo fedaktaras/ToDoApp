@@ -18,4 +18,8 @@ public class ListOfTasksService {
 
     public void addListOfTasks(ListOfTasks listOfTasks){listOfTasksRepository.save(listOfTasks);}
 
+
+    public ListOfTasks getListOfTasksById(long id){
+        return listOfTasksRepository.findById(id).get();
+    }
 }

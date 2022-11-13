@@ -9,6 +9,8 @@ import java.util.ArrayList;
 public class ListOfTasksController {
     @Autowired
     private ListOfTasksService listOfTasksService;
+    @Autowired
+    private ListItemService listItemService;
 
     @RequestMapping("/lists")
     ArrayList<ListOfTasks> getListsOfTasks(){
@@ -19,4 +21,13 @@ public class ListOfTasksController {
         listOfTasksService.addListOfTasks(newListOfTasks);
     }
 
+    @PostMapping(value = "/lists/{id}")
+    public void newListItemOnListOfTasks (@RequestBody ListItem listItem, @PathVariable("id") long id){
+        listItemService.addListItem(listItem);
+        long listItemId = listItemService.listItemRepository.findLastId();
+        listItem = listItemService.getListItemById(listItemId);
+        ListOfTasks listOfTasks =  listOfTasksService.getListOfTasksById(id);
+        listOfTasks.getItemsOnBoard().put(listItemId, listItem);
+        listOfTasksService.listOfTasksRepository.save(listOfTasks);
+    }
 }

@@ -14,7 +14,7 @@ public class ListOfTasks {
     private Long id;
     private String text;
     @OneToMany
-    private Map<Long, ListItem> itemsOnBoard;
+    private List<ListItem> itemsOnBoard;
 
     public ListOfTasks(){}
     public ListOfTasks(String text){
@@ -37,11 +37,11 @@ public class ListOfTasks {
         this.text = text;
     }
 
-    public Map<Long, ListItem> getItemsOnBoard() {
+    public List<ListItem> getItemsOnBoard() {
         return itemsOnBoard;
     }
 
-    public void setItemsOnBoard(Map<Long, ListItem> itemsOnBoard) {
+    public void setItemsOnBoard(List<ListItem> itemsOnBoard) {
         this.itemsOnBoard = itemsOnBoard;
     }
 }

@@ -16,7 +16,6 @@ public class ListItemService {
         listItemRepository.findAll().forEach(listItemArrayList::add);
         return listItemArrayList;
     }
-
     public  ListItem getListItemById(long id){
         Optional<ListItem> result;
         result =  listItemRepository.findById(id);

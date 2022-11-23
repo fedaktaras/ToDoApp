@@ -13,24 +13,24 @@ public class ListOfTasksController {
     private ListItemService listItemService;
 
     @RequestMapping("/lists")
-    ArrayList<ListOfTasks> getListsOfTasks(){
-        return listOfTasksService.getAllListOfTasks();
+    ArrayList<ListWithTasks> getListsOfTasks(){
+        ArrayList<ListOfTasks> list = listOfTasksService.getAllListOfTasks();
+        ArrayList<ListWithTasks> listWithTasks = new ArrayList<>();
+        for (int i = 0; i< list.size(); i++){
+            listWithTasks.add(new ListWithTasks(list.get(i)));
+            listWithTasks.get(i).setListOfItems(listOfTasksService.getAllListOfTasksByListId(list.get(i).getId()));
+        }
+        return listWithTasks;
     }
-    @PostMapping("/lists")
-    public void newListOfTasks(@RequestBody ListOfTasks newListOfTasks){
-        listOfTasksService.addListOfTasks(newListOfTasks);
-    }
-
-    @PostMapping(value = "/lists/{id}")
-    public void newListItemOnListOfTasks (@RequestBody ListItem listItem, @PathVariable("id") long listOfTasksId){
-        listItemService.addListItem(listItem);
-        long listItemId = listItemService.listItemRepository.findLastId();
-        listItem = listItemService.getListItemById(listItemId);
-        ListOfTasks listOfTasks =  listOfTasksService.getListOfTasksById(listOfTasksId);
-        listOfTasks.getItemsOnBoard().add(listItem);
-        listOfTasksService.listOfTasksRepository.save(listOfTasks);
-    }
-
+    @PostMapping("/list")
+    public void newListOfTasks(@RequestBody ListOfTasks newListOfTasks){listOfTasksService.addListOfTasks(newListOfTasks);}
+    @PostMapping(value = "/lists")
+    public void newListItemOnListOfTasks (@RequestBody ListItem listItem){listItemService.addListItem(listItem);}
     @GetMapping("/list/{id}")
-    ListOfTasks getListsOfTask(@PathVariable("id") long listOfTasksId){return listOfTasksService.getListOfTasksById(listOfTasksId);}
+    ListWithTasks getListsOfTask(@PathVariable("id") long listOfTasksId){
+        ListWithTasks listWithTasks = new ListWithTasks(listOfTasksService.getListOfTasksById(listOfTasksId));
+        listWithTasks.setListOfItems(listOfTasksService.getAllListOfTasksByListId(listOfTasksId));
+        return listWithTasks;
+    }
+
 }
